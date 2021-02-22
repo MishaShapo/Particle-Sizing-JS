@@ -1,34 +1,32 @@
+import React from "react"
 import useCanvas from "../utils/useCanvas"
 
-const resizeCanvas = canvas => {
-  const { width, height } = canvas.getBoundingClientRect()
-
-  if (canvas.width !== width || canvas.height !== height) {
-    const { devicePixelRatio: ratio = 1 } = window
-    const context = canvas.getContext("2d")
-    canvas.width = width * ratio
-    canvas.height = height * ratio
-    context.scale(ratio, ratio)
-    return true
-  }
-
-  return false
-}
-
-const _predraw = context => {
-  context.save()
-  resizeCanvas(context, canvas)
-  const { width, height } = context.canvas
-  context.clearRect(0, 0, width, height)
-}
-const _postdraw = () => {
-  index++
-  ctx.restore()
-}
-
 const Graph = props => {
-  const { draw, predraw = _predraw, postdraw = _postdraw } = props
-  const canvasRef = useCanvas(draw, { predraw, postdraw })
-  return <canvas ref={canvasRef} {...rest} />
+  const { draw, options } = props
+  const canvasRef = useCanvas(draw, options)
+  return (
+    <div
+      style={{
+        backgroundColor: "red",
+        width: "40%",
+        paddingTop: "22.5%",
+        position: "relative",
+      }}
+    >
+      <canvas
+        ref={canvasRef}
+        style={{
+          background: "#c0c0c0",
+          width: "100%",
+          height: "100%",
+          position: "absolute",
+          top: 0,
+          left: 0,
+          bottom: 0,
+          right: 0,
+        }}
+      />
+    </div>
+  )
 }
 export default Graph

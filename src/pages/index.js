@@ -71,9 +71,49 @@ export default class Home extends React.Component {
               justify="space-evenly"
               alignItems="center"
             >
-              <Graph id={originalGraphId} imgPath={this.state.imgPath} />
+              <Graph
+                id={originalGraphId}
+                draw={(context, { imgPath }) => {
+                  console.log("draw called")
+                  if (!imgPath) {
+                    return
+                  }
+                  var img = new Image()
+                  var reader = new FileReader()
+
+                  reader.onload = event => {
+                    img.src = reader.result
+                  }
+
+                  img.onload = event => {
+                    let cw = context.canvas.clientWidth,
+                      ch = context.canvas.clientHeight,
+                      iw = img.width,
+                      ih = img.height
+
+                    var scale = Math.min(cw / iw, ch / ih)
+
+                    // get the top left position of the image
+                    var x = cw / 2 - (iw / 2) * scale
+                    var y = ch / 2 - (ih / 2) * scale
+
+                    console.log(
+                      `cw: ${cw}. ch ${ch}. iw: ${iw}. ih: ${ih}. scale: ${scale}. x:${x}. y:${y}`
+                    )
+                    context.drawImage(
+                      img,
+                      x,
+                      y,
+                      img.width * scale,
+                      img.height * scale
+                    )
+                  }
+                  reader.readAsDataURL(imgPath)
+                }}
+                options={{ imgPath: this.state.imgPath }}
+              />
               <Divider orientation="vertical" flexItem />
-              <Graph id={cleanGraphId} />
+              <Graph id={cleanGraphId} draw={() => {}} />
             </Grid>
           </li>
           <li>The area of the particle is: </li>
