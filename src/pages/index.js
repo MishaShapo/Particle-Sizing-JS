@@ -12,26 +12,15 @@ export default class Home extends React.Component {
     super(props)
 
     this.state = { imgPath: "" }
-
-    this.imgEl = React.createRef()
-
     this.srcOnChange = this.srcOnChange.bind(this)
-    this.imgOnLoad = this.imgOnLoad.bind(this)
   }
 
   srcOnChange(e) {
-    e.preventDefault()
     e.persist()
     console.log("event:", e)
     this.setState(state => ({
       imgPath: e.target.files[0],
     }))
-  }
-
-  imgOnLoad(e) {
-    let mat = window.cv.imread(this.imgEl.current)
-    window.cv.imshow("canvasOutput", mat)
-    mat.delete()
   }
 
   render() {
@@ -71,49 +60,9 @@ export default class Home extends React.Component {
               justify="center"
               alignItems="center"
             >
-              <Graph
-                id={originalGraphId}
-                draw={(context, { imgPath }) => {
-                  console.log("draw called")
-                  if (!imgPath) {
-                    return
-                  }
-                  var img = new Image()
-                  var reader = new FileReader()
-
-                  reader.onload = event => {
-                    img.src = reader.result
-                  }
-
-                  img.onload = event => {
-                    let cw = context.canvas.clientWidth,
-                      ch = context.canvas.clientHeight,
-                      iw = img.width,
-                      ih = img.height
-
-                    var scale = Math.min(cw / iw, ch / ih)
-
-                    // get the top left position of the image
-                    var x = cw / 2 - (iw / 2) * scale
-                    var y = ch / 2 - (ih / 2) * scale
-
-                    console.log(
-                      `cw: ${cw}. ch ${ch}. iw: ${iw}. ih: ${ih}. scale: ${scale}. x:${x}. y:${y}`
-                    )
-                    context.drawImage(
-                      img,
-                      x,
-                      y,
-                      img.width * scale,
-                      img.height * scale
-                    )
-                  }
-                  reader.readAsDataURL(imgPath)
-                }}
-                options={{ imgPath: this.state.imgPath }}
-              />
+              <InputGraph options={{ imgPath: this.state.imgPath }} />
               <Divider orientation="vertical" flexItem variant="middle" />
-              <Graph id={cleanGraphId} draw={() => {}} />
+              <OutputGraph id={cleanGraphId} draw={() => {}} />
             </Grid>
           </li>
           <li>The area of the particle is: </li>
