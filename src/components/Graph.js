@@ -8,8 +8,8 @@ const Graph = props => {
     <div
       style={{
         backgroundColor: "red",
-        width: "40%",
-        paddingTop: "22.5%",
+        width: "45%",
+        paddingTop: "30%",
         position: "relative",
       }}
     >

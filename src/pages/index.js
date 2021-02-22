@@ -68,7 +68,7 @@ export default class Home extends React.Component {
             <Grid
               container
               direction="row"
-              justify="space-evenly"
+              justify="center"
               alignItems="center"
             >
               <Graph
@@ -112,7 +112,7 @@ export default class Home extends React.Component {
                 }}
                 options={{ imgPath: this.state.imgPath }}
               />
-              <Divider orientation="vertical" flexItem />
+              <Divider orientation="vertical" flexItem variant="middle" />
               <Graph id={cleanGraphId} draw={() => {}} />
             </Grid>
           </li>
